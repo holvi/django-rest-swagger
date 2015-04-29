@@ -15,6 +15,8 @@ from .introspectors import (
     get_default_value,
     get_primitive_type
 )
+
+from .utils import create_serializer
 from .compat import OrderedDict
 
 
@@ -277,7 +279,7 @@ class DocumentationGenerator(object):
 
         serializers_set = set()
         for serializer in serializers:
-            fields = serializer().get_fields()
+            fields = create_serializer(serializer).get_fields()
             for name, field in fields.items():
                 if isinstance(field, BaseSerializer):
                     serializers_set.add(get_thing(field, lambda f: f))
@@ -297,7 +299,7 @@ class DocumentationGenerator(object):
             return
 
         if hasattr(serializer, '__call__'):
-            fields = serializer().get_fields()
+            fields = create_serializer(serializer).get_fields()
         else:
             fields = serializer.get_fields()
 

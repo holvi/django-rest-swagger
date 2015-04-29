@@ -29,6 +29,7 @@ try:
     import django_filters
 except ImportError:
     django_filters = None
+from .utils import create_serializer
 
 
 def get_view_description(view_cls, html=False, docstring=None):
@@ -435,7 +436,7 @@ class BaseMethodIntrospector(object):
         if serializer is None:
             return data
 
-        fields = serializer().get_fields()
+        fields = create_serializer(serializer).get_fields()
 
         for name, field in fields.items():
 
